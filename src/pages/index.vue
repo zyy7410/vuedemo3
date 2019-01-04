@@ -26,7 +26,7 @@
         </div>
 
         <div class="index-right">
-            <div class="banner">banner</div>
+            <slider-show :slides="slides" :invTime="sliderTime" @onchange="onchangeEvent"></slider-show>
 
             <div class="index-board-list">
                 <div v-for="item in boardList" :key="item.id"
@@ -49,9 +49,24 @@
 </template>
 
 <script>
+// 子组件
+import sliderShow from '../components/sliderShow'
+// 发请求
 import axios from 'axios'
+// 模拟后端 返回数据
+import '../mock/mock.js'
+
 export default {
-  // 安装
+  // 子组件
+  components: {
+      sliderShow
+  },
+  methods:{
+      onchangeEvent(){
+          console.log('onchangeEvent run!~~')
+      }
+  },
+  // 挂载后
   mounted () {
     // 发送ajax请求, 请求新闻列表
     axios.get('api/getNewsList')
@@ -81,23 +96,46 @@ export default {
         console.log(error)
     })
 
-    axios.get('api/getSlides')
-    .then((res) => {
-        console.log(res)
-        this.slides = res.data
-    })
-    .catch((error) => {
-        console.log(error)
-    })
+    // axios.get('api/getSlides')
+    // .then((res) => {
+    //     console.log(res)
+    //     this.slides = res.data
+    // })
+    // .catch((error) => {
+    //     console.log(error)
+    // })
 
   },
   data () {
       return {
-        slides: null,
+        sliderTime: 2000,
         boardList: null,
         newsList: [],
-        productList: null
+        productList: null,
+        // slides: null
         //编写 组件里的一套数据，进行渲染
+        slides: [
+            {
+                src: require('../assets/slideShow/pic1.jpg'),
+                title: 'title-111',
+                href:'detail/analysis'
+            },
+            {
+                src: require('../assets/slideShow/pic2.jpg'),
+                title: 'title-222',
+                href:'detail/count'
+            },
+            {
+                src: require('../assets/slideShow/pic3.jpg'),
+                title: 'title-333',
+                href:'http://starcraft.com'
+            },
+            {
+                src: require('../assets/slideShow/pic4.jpg'),
+                title: 'title-444',
+                href:'detail/forecast'
+            }
+        ],
         // productList: {
         //     pc: {
         //         title: 'PC产品',
@@ -251,7 +289,7 @@ export default {
 
 /* 左边--最新消息 */
 .lastest-news{
-    height: 588px;
+    height: 567px;
 }
 .lastest-news ul{
     padding-top: 20px;
@@ -262,13 +300,8 @@ export default {
     float: right;
     width: 900px;
 }
-/* 右边--banner */
-.index-wrap .index-right .banner{
-    height: 506px;
-    margin-bottom: 20px;
-    background-color: green;
-}
-/* 右边--列表 */
+
+/* 右边-- 下面 列表 */
 .index-wrap .index-right .index-board-list{
     width: 920px;
     overflow: hidden;

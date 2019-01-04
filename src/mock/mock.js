@@ -6,35 +6,35 @@ Mock.mock(/getNewsList/, {
         'title': '@ctitle(5, 20)'
     }]
 })
-function getRImg () {
-	return Mock.Random.image('700x300', Mock.Random.hex())
-}
-Mock.mock(/getSlides/, [
-    {
-      src: getRImg (),
-      title: '@ctitle(4, 12)',
-      ky: 1,
-      toKey: 'analysis'
-    },
-    {
-      src: getRImg (),
-      title: '@ctitle(4, 12)',
-      ky: 2,
-      toKey: 'count'
-    },
-    {
-      src: getRImg (),
-      title: '@ctitle(4, 12)',
-      ky: 3,
-      toKey: 'publish'
-    },
-    {
-      src: getRImg (),
-      title: '@ctitle(4, 12)',
-      ky: 4,
-      toKey: 'forecast'
-    }
-])
+// function getRImg () {
+// 	return Mock.Random.image('700x300', Mock.Random.hex())
+// }
+// Mock.mock(/getSlides/, [
+//     {
+//       src: getRImg (),
+//       title: '@ctitle(4, 12)',
+//       ky: 1,
+//       toKey: 'analysis'
+//     },
+//     {
+//       src: getRImg (),
+//       title: '@ctitle(4, 12)',
+//       ky: 2,
+//       toKey: 'count'
+//     },
+//     {
+//       src: getRImg (),
+//       title: '@ctitle(4, 12)',
+//       ky: 3,
+//       toKey: 'publish'
+//     },
+//     {
+//       src: getRImg (),
+//       title: '@ctitle(4, 12)',
+//       ky: 4,
+//       toKey: 'forecast'
+//     }
+// ])
 
 Mock.mock(/getPrice/, {
 	'number|1-100': 100 
@@ -45,14 +45,14 @@ Mock.mock(/getBoardList/, [
         {
           title: '@ctitle(4)',
           description: '@ctitle(8, 12)',
-          id: 'car',
+          id: 'earth',
           toKey: 'analysis',
           saleout: '@boolean'
         },
         {
           title: '@ctitle(4)',
           description: '@ctitle(8, 12)',
-          id: 'earth',
+          id: 'car',
           toKey: 'count',
           saleout: '@boolean'
         },
@@ -66,7 +66,7 @@ Mock.mock(/getBoardList/, [
         {
           title: '@ctitle(4)',
           description: '@ctitle(8, 12)',
-          id: 'hill',
+          id: 'mouten',
           toKey: 'publish',
           saleout: '@boolean'
         }
