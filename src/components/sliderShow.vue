@@ -72,14 +72,14 @@ export default {
             setTimeout(() =>{
                 this.isShow = true
                 this.nowIndex = index
-                console.log(this.nowIndex)
+                // console.log(this.nowIndex)
                 this.$emit('onchange', index)
             }, 10)
         },
         // 自动切换
         runInv () {
             this.invId = setInterval(() => {
-                console.log(123)
+                // console.log(123)
                 this.goto(this.nextIndex)
             }, this.invTime)
         },
