@@ -1,7 +1,7 @@
 <template>
     <div>      
         <div class="app-header">
-            <div class="app-head-inner wrap">
+            <div class="app-head-inner">
                 <img src="../assets/logo.png">
                 <div class="head-nav">
                     <ul class="nav-list">
@@ -109,17 +109,23 @@ html{
 .nav-list li{
     list-style-type: none;
 }
-.wrap{
+/* .wrap{
     width: 1170px;
     height: 70px;
     margin: 0 auto;
-}
+} */
 
 
 
 .app-header{
     width: 100%;
     height: 70px;
+    background-color:#353535;
+}
+.app-header .app-head-inner{
+    width: 1170px;
+    height: 70px;
+    margin: 0 auto;
     background-color:#353535;
 }
 .app-header .app-head-inner img{
@@ -139,12 +145,12 @@ html{
     font-size:14px;
     float: left;
     padding:5px;
-
 }
 
 
 
 .app-footer{
+    width: 100%;
     height: 70px;
     line-height: 70px;
     background-color:rgb(218, 218, 218);
