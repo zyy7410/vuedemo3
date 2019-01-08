@@ -5,11 +5,11 @@
                 <img src="../assets/logo.png">
                 <div class="head-nav">
                     <ul class="nav-list">
-                        <li>登陆</li>
+                        <li @click="logClick">登陆</li>
                         <li class="nav-pile">|</li>
-                        <li>注册</li>
+                        <li @click="regClick">注册</li>
                         <li class="nav-pile">|</li>
-                        <li>关于</li>
+                        <li @click="aboutClick">关于</li>
                     </ul>
                 </div>
             </div>
@@ -21,16 +21,52 @@
             </keep-alive>
         </div>
         <div class="app-footer">
-            <p>@ 2018 - 12 - 27 </p>
+            <p>@ 2018 - 12 - 27 这是一个 使用Vue.js 构建的 电商平台项目。</p>
         </div>
+
+        <!-- 在 父组件中的子组件上 监听 自定义事件 -->
+        <my-dialog :is-show="isShowLogDialog" @on-close="closeDialog('isShowLogDialog')">
+            <!-- 登陆/注册 内容： 是一个复杂的表单，抽成 独立组件 -->
+            <p>log </p>
+            <log-from></log-from>
+        </my-dialog>
+        <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
+            <p>reg </p>
+            <reg-from></reg-from>
+        </my-dialog>
+        <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
+            <p>这是一个 使用Vue.js 构建的 电商平台项目。</p>
+        </my-dialog>
+
     </div>
 </template>
 
 <script>
+import Dialog from './dialog'
 export default {
+  components: {
+      MyDialog: Dialog
+  },
   data () {
       return {
-          msg: 'i am layout'
+          isShowLogDialog: false,
+          isShowRegDialog: false,
+          isShowAboutDialog: false
+      }
+  },
+  methods: {
+      logClick () {
+          this.isShowLogDialog = true
+      },
+      regClick () {
+          this.isShowRegDialog = true
+      },
+      aboutClick () {
+          this.isShowAboutDialog = true
+      },
+      //  自定义事件：改变 数据的值
+      closeDialog (attr) {
+          this[attr] = false
       }
   }
 }
@@ -109,11 +145,6 @@ html{
 .nav-list li{
     list-style-type: none;
 }
-/* .wrap{
-    width: 1170px;
-    height: 70px;
-    margin: 0 auto;
-} */
 
 
 
