@@ -5,9 +5,14 @@
                 <img src="../assets/logo.png">
                 <div class="head-nav">
                     <ul class="nav-list">
-                        <li @click="logClick">登陆</li>
-                        <li class="nav-pile">|</li>
-                        <li @click="regClick">注册</li>
+                        <!-- 登陆了以后 才 显示 ：用户姓名 -->
+                        <li>{{ username }}</li>
+                        <li v-if="username !== ''" class="nav-pile">|</li>
+                        <li v-if="username !== ''" @click="quit">退出</li>
+                        <!-- username === '空' 的时候 再显示登陆/注册 -->
+                        <li v-if="username === ''" @click="logClick">登陆</li>
+                        <li v-if="username === ''" class="nav-pile">|</li>
+                        <li v-if="username === ''" @click="regClick">注册</li>
                         <li class="nav-pile">|</li>
                         <li @click="aboutClick">关于</li>
                     </ul>
@@ -24,16 +29,19 @@
             <p>@ 2018 - 12 - 27 这是一个 使用Vue.js 构建的 电商平台项目。</p>
         </div>
 
+
         <!-- 在 父组件中的子组件上 监听 自定义事件 -->
         <my-dialog :is-show="isShowLogDialog" @on-close="closeDialog('isShowLogDialog')">
             <!-- 登陆/注册 内容： 是一个复杂的表单，抽成 独立组件 -->
-            <p>log </p>
-            <log-from></log-from>
+            <!-- 插槽 -->
+            <log-form @has-log="onSuccessLog"></log-form>
         </my-dialog>
+
         <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
-            <p>reg </p>
-            <reg-from></reg-from>
+            <!-- 登陆/注册 内容： 是一个复杂的表单，抽成 独立组件 -->
+            <reg-form></reg-form>
         </my-dialog>
+
         <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
             <p>这是一个 使用Vue.js 构建的 电商平台项目。</p>
         </my-dialog>
@@ -43,15 +51,20 @@
 
 <script>
 import Dialog from './dialog'
+import LogForm from './logForm'
+import RegForm from './regForm'
 export default {
   components: {
-      MyDialog: Dialog
+      MyDialog: Dialog,
+      LogForm,
+      RegForm
   },
   data () {
       return {
           isShowLogDialog: false,
           isShowRegDialog: false,
-          isShowAboutDialog: false
+          isShowAboutDialog: false,
+          username: ''
       }
   },
   methods: {
@@ -67,6 +80,17 @@ export default {
       //  自定义事件：改变 数据的值
       closeDialog (attr) {
           this[attr] = false
+      },
+      //  自定义事件：登陆成功，从子组件获取 数据 作为参数 传递给父组件
+      onSuccessLog (data) {
+          console.log(data)
+          this.closeDialog('isShowLogDialog')
+          this.username = data.username
+      },
+      //   退出 按钮
+      quit () {
+          console.log('退出')
+          this.username = ''
       }
   }
 }

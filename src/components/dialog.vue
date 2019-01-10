@@ -1,13 +1,15 @@
 <template>
     <div>
-        <div class="dialog-wrap" v-if="isShow">
-            <div class="dialog-cover" @click="closeMyself"></div>
-            <div class="dialog-content">
-                <!-- 当点击子组件 中的 一个按钮，出发一个点击事件 -->
-                <p class="dialog-close" @click="closeMyself">x</p>
-                <!-- 插槽 -->
-                <slot>父组件 没有内容 默认显示该值</slot>
-            </div>
+        <div class="dialog-wrap" >
+            <div class="dialog-cover" @click="closeMyself" v-if="isShow"></div>
+            <transition name="drop">
+                <div class="dialog-content" v-if="isShow">
+                    <!-- 当点击子组件 中的 一个按钮，出发一个点击事件 -->
+                    <p class="dialog-close" @click="closeMyself">x</p>
+                    <!-- 插槽 -->
+                    <slot>父组件 没有内容 默认显示该值</slot>
+                </div>
+            </transition> 
         </div>
     </div>
 </template>
@@ -36,6 +38,21 @@ export default {
 </script>
 
 <style scoped>
+/* 下坠 */
+.drop-enter-active{
+    transition: all 0.5s ease;
+}
+.drop-leave-active{
+    transition: all 0.3s ease;
+}
+.drop-enter{
+    transform: translateY(-500px);
+}
+.drop-leave-active{
+    transform: translateY(-500px);
+}
+
+
 .dialog-wrap{
     position: fixed;
     width: 100%;
@@ -58,7 +75,7 @@ export default {
     top: 20%;
     left: 50%;
     margin-left: -25%;
-    padding: 20px;
+    padding: 40px 30px;
     background-color: #fff;
     border: 2px solid #464068;
     line-height: 1.6;
