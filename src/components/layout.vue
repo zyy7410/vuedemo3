@@ -2,7 +2,9 @@
     <div>      
         <div class="app-header">
             <div class="app-head-inner">
-                <img src="../assets/logo.png">
+                <router-link :to="{path: '/'}">
+                    <img src="../assets/logo.png">
+                </router-link>  
                 <div class="head-nav">
                     <ul class="nav-list">
                         <!-- 登陆了以后 才 显示 ：用户姓名 -->

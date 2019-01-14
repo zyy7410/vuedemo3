@@ -5,8 +5,14 @@ import Vue from 'vue'
 // 1.替换 根组件：
 import Layout from './components/layout'
 
-// 3 引入其他页面的组件
+// 3 引入其他页面的 路由
 import IndexPage from './pages/index'
+import DetailPage from './pages/detail'
+
+import CountPage from './pages/detail/count'
+import ForecastPage from './pages/detail/forecast'
+import AnalysisPage from './pages/detail/analysis'
+import PublishPage from './pages/detail/publish'
 
 // 2.1 引入路由 库
 import VueRouter from 'vue-router'
@@ -21,6 +27,30 @@ let router = new VueRouter({
     {
       path: '/',
       component: IndexPage
+    },
+    {
+      path: '/detail',
+      component: DetailPage,
+      // 重定向：不想让用户访问这个页面，当用户输入此页面时，定向到另一个页面
+      redirect: '/detail/count',
+      children: [
+        {
+          path: 'count',
+          component: CountPage
+        },
+        {
+          path: 'forecast',
+          component: ForecastPage
+        },
+        {
+          path: 'analysis',
+          component: AnalysisPage
+        },
+        {
+          path: 'publish',
+          component: PublishPage
+        }
+      ]
     }
   ]
 })

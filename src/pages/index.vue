@@ -26,6 +26,7 @@
         </div>
 
         <div class="index-right">
+            <!-- 幻灯片 -->
             <slider-show :slides="slides" :invTime="sliderTime" @onchange="onchangeEvent"></slider-show>
 
             <div class="index-board-list">
@@ -118,22 +119,22 @@ export default {
             {
                 src: require('../assets/slideShow/pic1.jpg'),
                 title: 'title-111',
-                href:'detail/analysis'
+                href:'detail/count'
             },
             {
                 src: require('../assets/slideShow/pic2.jpg'),
                 title: 'title-222',
-                href:'detail/count'
+                href:'detail/forecast'
             },
             {
                 src: require('../assets/slideShow/pic3.jpg'),
                 title: 'title-333',
-                href:'http://starcraft.com'
+                href:'detail/analysis'
             },
             {
                 src: require('../assets/slideShow/pic4.jpg'),
                 title: 'title-444',
-                href:'detail/forecast'
+                href:'detail/publish'
             }
         ],
         // productList: {
