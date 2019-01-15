@@ -139,14 +139,14 @@ export default {
 .sales-board-line .sales-board-line-left{
     float: left;
     width: 100px;
-    height: 30px;
+    height: 55px;
     line-height: 30px;
     /* background-color: red; */
 }
 .sales-board-line .sales-board-line-right{
     float: left;
     width: 760px;
-    height: 30px;
+    height: 55px;
     line-height: 30px;
     /* background-color: green; */
 }

@@ -11,15 +11,21 @@
         <div class="sales-board-form">
             <div class="sales-board-line">
                 <div class="sales-board-line-left">购买数量：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-right">
+                    <v-chooser :choosers="productTypes" @onChangeChooser="onChangeChooserType"></v-chooser>
+                </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">产品类型：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-right">
+                    <v-selection :selections="productTypes" @onChangeSelection="onChangeSelectionType"></v-selection>
+                </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">有效时间：</div>
-                <div class="sales-board-line-right">半年</div>
+                <div class="sales-board-line-right">
+                    <multiply-chooser :multiplyChoosers="productTypes" @onChangeMultiplyChooser="onChangeMultiplyChooserType"></multiply-chooser>
+                </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">总价：</div>
@@ -62,10 +68,43 @@
 </template>
 
 <script>
+import VSelection from '../../components/selection'
+import VChooser from '../../components/chooser'
+import multiplyChooser from '../../components/multiplyChooser'
 export default {
+    components: {
+        VSelection, VChooser, multiplyChooser
+    },
     data () {
         return {
-
+            productTypes:[
+                {
+                    label: '入门版',
+                    value: 0
+                },
+                {
+                    label: '中级版',
+                    value: 1
+                },
+                {
+                    label: '高级版',
+                    value: 2
+                }
+            ]
+        }
+    },
+    methods: {
+        // 监听：子组件 事件 ：子组件中 数据改变
+        onChangeChooserType () {
+            //  console.log(nowIndex)
+            console.log('111111111', '单选')
+        },
+        // 监听：子组件 事件 ：子组件中 数据改变
+        onChangeSelectionType () {
+            console.log('2222222', '下拉选择')
+        },
+        onChangeMultiplyChooserType () {
+            console.log('33333', '多选')
         }
     }
 }
