@@ -1,5 +1,5 @@
 <template>
-<!-- 下拉选择 -->
+<!-- 下拉选择组件 -->
     <div class="selection-component">
         <div class="selection-show" @click="toggleDrop">
             <span>{{ selections[nowIndex].label }}</span>
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+     // 父组件 传给 子组件 的 数据 ：默认值
     props:{
         selections: {
             type: Array,
@@ -27,7 +28,7 @@ export default {
                 },
                 {
                     label: '默认值 2',
-                    value: 0
+                    value: 1
                 }
             ]
         }

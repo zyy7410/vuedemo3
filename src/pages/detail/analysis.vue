@@ -12,7 +12,7 @@
             <div class="sales-board-line">
                 <div class="sales-board-line-left">购买数量：</div>
                 <div class="sales-board-line-right">
-                    <v-chooser :choosers="productTypes" @onChangeChooser="onChangeChooserType"></v-chooser>
+                    <v-counter :minNumber="minCount" :maxNumber="maxCount" @onChangeCounterMinus="onChangeCounterMinusType" @onChangeCounterAdd="onChangeCounterAddType" ></v-counter>
                 </div>
             </div>
             <div class="sales-board-line">
@@ -24,7 +24,13 @@
             <div class="sales-board-line">
                 <div class="sales-board-line-left">有效时间：</div>
                 <div class="sales-board-line-right">
-                    <multiply-chooser :multiplyChoosers="productTypes" @onChangeMultiplyChooser="onChangeMultiplyChooserType"></multiply-chooser>
+                    <v-chooser :choosers="validTime" @onChangeChooser="onChangeChooserType"></v-chooser>
+                </div>
+            </div>
+            <div class="sales-board-line">
+                <div class="sales-board-line-left">产品版本：</div>
+                <div class="sales-board-line-right">
+                    <multiply-chooser :multiplyChoosers="productVersions" @onChangeMultiplyChooser="onChangeMultiplyChooserType"></multiply-chooser>
                 </div>
             </div>
             <div class="sales-board-line">
@@ -68,16 +74,20 @@
 </template>
 
 <script>
+import VCounter from '../../components/counter'
 import VSelection from '../../components/selection'
 import VChooser from '../../components/chooser'
 import multiplyChooser from '../../components/multiplyChooser'
 export default {
     components: {
-        VSelection, VChooser, multiplyChooser
+        VSelection, VChooser, multiplyChooser, VCounter
     },
     data () {
         return {
-            productTypes:[
+            // 父组件 传给 子组件 的 数据
+            minCount: 1,
+            maxCount: 200,
+            productTypes: [
                 {
                     label: '入门版',
                     value: 0
@@ -90,6 +100,34 @@ export default {
                     label: '高级版',
                     value: 2
                 }
+            ],
+            validTime: [
+                {
+                    label: '半年',
+                    value: 0
+                },
+                {
+                    label: '一年',
+                    value: 1
+                },
+                {
+                    label: '三年',
+                    value: 2
+                }
+            ],
+            productVersions: [
+                {
+                    label: '客户版',
+                    value: 0
+                },
+                {
+                    label: '代理商版',
+                    value: 1
+                },
+                {
+                    label: '专家版',
+                    value: 2
+                }
             ]
         }
     },
@@ -97,21 +135,26 @@ export default {
         // 监听：子组件 事件 ：子组件中 数据改变
         onChangeChooserType () {
             //  console.log(nowIndex)
-            console.log('111111111', '单选')
+            console.log('1111', '单选')
         },
         // 监听：子组件 事件 ：子组件中 数据改变
         onChangeSelectionType () {
-            console.log('2222222', '下拉选择')
+            console.log('2222', '下拉选择')
         },
         onChangeMultiplyChooserType () {
-            console.log('33333', '多选')
+            console.log('3333', '多选')
+        },
+        onChangeCounterMinusType () {
+            console.log('4444', '-')
+        },
+        onChangeCounterAddType () {
+            console.log('5555', '+')
         }
     }
 }
 </script>
 
 <style scoped>
-
 
 </style>
 

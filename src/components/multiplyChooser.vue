@@ -1,10 +1,9 @@
 <template>
-<!-- 多选 -->
+<!-- 多选组件 -->
     <div class="multiply-chooser-component">
         <ul>
             <li v-for="(item, index) in multiplyChoosers" :class="{'active': checkActive(index)}" :title="item.label" @click="toggleMultiplyChooser(index)">{{item.label}}</li>
         </ul>
-        
     </div>
 </template>
 
@@ -12,6 +11,7 @@
 // 引入js工具库：lodash
 import _ from 'lodash'
 export default {
+     // 父组件 传给 子组件 的 数据 ：默认值
     props:{
         multiplyChoosers: {
             type: Array,
@@ -22,11 +22,11 @@ export default {
                 },
                 {
                     label: '默认值 2',
-                    value: 0
+                    value: 1
                 },
                                 {
                     label: '默认值 2',
-                    value: 0
+                    value: 2
                 }
             ]
         }

@@ -10,12 +10,16 @@
 
         <div class="sales-board-form">
             <div class="sales-board-line">
-                <div class="sales-board-line-left">购买数量：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-left">产品类型：</div>
+                <div class="sales-board-line-right">
+                    <v-chooser :choosers="productTypes"></v-chooser>
+                </div>
             </div>
             <div class="sales-board-line">
-                <div class="sales-board-line-left">产品类型：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-left">适用地区：</div>
+                <div class="sales-board-line-right">
+                    <v-selection :selections="cityes"></v-selection>
+                </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">有效时间：</div>
@@ -238,10 +242,43 @@
 </template>
 
 <script>
+import VChooser from '../../components/chooser'
+import VSelection from '../../components/selection'
 export default {
+    components: {
+        VChooser, VSelection
+    },
     data () {
         return {
-
+            // 父组件 传给 子组件 的 数据
+            productTypes: [
+                {
+                    label: '红色版',
+                    value: 0
+                },
+                {
+                    label: '绿色版',
+                    value: 1
+                },
+                                {
+                    label: '紫色版',
+                    value: 2
+                }
+            ],
+            cityes: [
+                {
+                    label: '北京',
+                    value: 0
+                },
+                {
+                    label: '上海',
+                    value: 1
+                },
+                {
+                    label: '广州',
+                    value: 2
+                }
+            ]
         }
     }
 }

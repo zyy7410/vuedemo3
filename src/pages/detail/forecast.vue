@@ -11,15 +11,19 @@
         <div class="sales-board-form">
             <div class="sales-board-line">
                 <div class="sales-board-line-left">购买数量：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-right">
+                    <v-counter :minNumber="minCount" :maxNumber="maxCount"></v-counter>
+                </div>
             </div>
             <div class="sales-board-line">
-                <div class="sales-board-line-left">产品类型：</div>
-                <div class="sales-board-line-right"></div>
+                <div class="sales-board-line-left">媒介：</div>
+                <div class="sales-board-line-right">
+                    <multiply-chooser :multiplyChoosers="medium"></multiply-chooser>
+                </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">有效时间：</div>
-                <div class="sales-board-line-right">半年</div>
+                <div class="sales-board-line-right">一年</div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">总价：</div>
@@ -51,17 +55,41 @@
 </template>
 
 <script>
+import VCounter from '../../components/counter'
+import multiplyChooser from '../../components/multiplyChooser'
 export default {
+    components: {
+        VCounter, multiplyChooser
+    },
     data () {
         return {
-
+            // 父组件 传给 子组件 的 数据
+            minCount: 0,
+            maxCount: 200,
+            medium: [
+                {
+                    label: '纸质报告',
+                    value: 0
+                },
+                {
+                    label: 'PDF',
+                    value: 1
+                },
+                {
+                    label: '页面报告',
+                    value: 2
+                },
+                {
+                    label: '邮件',
+                    value: 3
+                }
+            ]
         }
     }
 }
 </script>
 
 <style scoped>
-
 
 </style>
 

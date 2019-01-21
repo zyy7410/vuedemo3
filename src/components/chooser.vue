@@ -1,15 +1,15 @@
 <template>
-<!-- 单选 -->
+<!-- 单选组件 -->
     <div class="chooser-component">
         <ul>
             <li v-for="(item, index) in choosers" :class="{'active': nowIndex === index}" :title="item.label" @click="chosenChooser(index)">{{item.label}}</li>
         </ul>
-        
     </div>
 </template>
 
 <script>
 export default {
+    // 父组件 传给 子组件 的 数据 ：默认值
     props:{
         choosers: {
             type: Array,
@@ -20,11 +20,11 @@ export default {
                 },
                 {
                     label: '默认值 2',
-                    value: 0
+                    value: 1
                 },
                                 {
                     label: '默认值 2',
-                    value: 0
+                    value: 2
                 }
             ]
         }
