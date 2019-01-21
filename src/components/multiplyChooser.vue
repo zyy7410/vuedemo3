@@ -50,7 +50,13 @@ export default {
                     return idx !== index
                 })
             }
-            this.$emit('onChangeMultiplyChooser', this.nowIndexes)
+
+            // 定义一个局部的 nowObjArray 变量， 通过map()方法，给 this.nowIndexes 多选数组 做一个映射，对里面的每一项 数字索引 获取 索引的 对应 值，将一个 数字数组 变成一个 有真实值的数组 ；
+            let nowObjArray = _.map(this.nowIndexes, (idx) => {
+                return this.multiplyChoosers[idx]
+            })
+            this.$emit('on-change', nowObjArray)
+
         },
         // active
         checkActive (index) {

@@ -144,3 +144,7 @@ Mock.mock(/login/, {
   "username": "zhaoyuying",
   "userId": 123123 
 })
+
+Mock.mock(/getPrice/, {
+  "amount": 678
+})

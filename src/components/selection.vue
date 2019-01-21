@@ -52,7 +52,7 @@ export default {
             this.isDrop = false
             // 当我们切换的时候，向外部父组件 发送一个自定义事件：
             // 通信：子组件 出发一个自定义事件，将子组建内 改变的数据，传给父组件，通知父组件，数据被修改了
-            this.$emit('onChangeSelection', this.nowIndex)
+            this.$emit('on-change', this.selections[this.nowIndex])
             // console.log(this.nowIndex)
         }
     }

@@ -36,7 +36,7 @@ export default {
     watch: {
         number () {
             // 发布给外层的 自定义事件
-            this.$emit('onChangeCounterMinus', this.number)
+            this.$emit('on-change', this.number)
         }
     },
     methods: {

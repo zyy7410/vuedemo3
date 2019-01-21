@@ -11,31 +11,32 @@
         <div class="sales-board-form">
             <div class="sales-board-line">
                 <div class="sales-board-line-left">购买数量：</div>
-                <div class="sales-board-line-right">
-                    <v-counter :minNumber="minCount" :maxNumber="maxCount" @onChangeCounterMinus="onChangeCounterMinusType" @onChangeCounterAdd="onChangeCounterAddType" ></v-counter>
+                <div class="sales-board-line-right">                
+                                                                                                     <!-- $event:子组件 传出来的 东西 -->
+                    <v-counter :minNumber="minCount" :maxNumber="maxCount" @on-change="onParamChange('buyNum', $event)" ></v-counter>
                 </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">产品类型：</div>
                 <div class="sales-board-line-right">
-                    <v-selection :selections="productTypes" @onChangeSelection="onChangeSelectionType"></v-selection>
+                    <v-selection :selections="productTypes" @on-change="onParamChange('buyType', $event)" ></v-selection>
                 </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">有效时间：</div>
                 <div class="sales-board-line-right">
-                    <v-chooser :choosers="validTime" @onChangeChooser="onChangeChooserType"></v-chooser>
+                    <v-chooser :choosers="periodList" @on-change="onParamChange('period', $event)" ></v-chooser>
                 </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">产品版本：</div>
                 <div class="sales-board-line-right">
-                    <multiply-chooser :multiplyChoosers="productVersions" @onChangeMultiplyChooser="onChangeMultiplyChooserType"></multiply-chooser>
+                    <multiply-chooser :multiplyChoosers="productVersions" @on-change="onParamChange('versions', $event)" ></multiply-chooser>
                 </div>
             </div>
             <div class="sales-board-line">
                 <div class="sales-board-line-left">总价：</div>
-                <div class="sales-board-line-right">500元</div>
+                <div class="sales-board-line-right">{{ price }} 元</div>
             </div>
 
             <div class="sales-board-line">
@@ -74,6 +75,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
+// 发请求
+import axios from 'axios'
+// 模拟后端 返回数据
+import '../../mock/mock.js'
+
 import VCounter from '../../components/counter'
 import VSelection from '../../components/selection'
 import VChooser from '../../components/chooser'
@@ -84,6 +91,14 @@ export default {
     },
     data () {
         return {
+            price: 0,
+
+            // 向后端发送一个请求(价格), 记录下，需要传过去的一些数据：
+            buyNum : 0,
+            buyType : {},
+            versions : [],   // 版本
+            period : {},     // 有效期
+
             // 父组件 传给 子组件 的 数据
             minCount: 1,
             maxCount: 200,
@@ -101,7 +116,7 @@ export default {
                     value: 2
                 }
             ],
-            validTime: [
+            periodList: [
                 {
                     label: '半年',
                     value: 0
@@ -133,23 +148,44 @@ export default {
     },
     methods: {
         // 监听：子组件 事件 ：子组件中 数据改变
-        onChangeChooserType () {
-            //  console.log(nowIndex)
-            console.log('1111', '单选')
+        // 所有组件，都有一个 @on-change 自定义事件，向外发数据，现在我们想所有组件 共享一个方法 onParamChange()，就必须要告诉 onParamChange() ，我们当前 是哪个组件修改了。。。因为组件个数多，所以 传参数 区分：某个组件 对应 某个值
+        onParamChange (attr, val) {
+            // 当前的 attr 给它赋 = 所需要的值 val
+            this[attr] = val
+            // console.log(this[attr] = val)
+            console.log(attr, this[attr])
+            this.getPrice()
         },
-        // 监听：子组件 事件 ：子组件中 数据改变
-        onChangeSelectionType () {
-            console.log('2222', '下拉选择')
-        },
-        onChangeMultiplyChooserType () {
-            console.log('3333', '多选')
-        },
-        onChangeCounterMinusType () {
-            console.log('4444', '-')
-        },
-        onChangeCounterAddType () {
-            console.log('5555', '+')
+        // 发送 ajax 请求：
+        getPrice () {
+            let buyVersionsArray = _.map(this.versions, (item) => {
+                return item.value
+            })
+            let reqParams = {
+                buyNum: this.buyNum,
+                buyType: this.buyType.value,
+                period: this.period.value,
+                versions: buyVersionsArray.join(',')
+            }
+            // 发送 ajax 请求,
+            axios.get('api/getPrice', reqParams)
+            .then((res) => {
+                // console.log(res)
+                this.price = res.data.amount
+                console.log(this.price)
+                // let data = JSON.parse(res.data)
+                // console.log(data.amount)
+            })
         }
+    },
+    // 挂载后：组件 都 渲染 完了
+    mounted () {
+        this.buyNum = 0
+        this.buyType = this.productTypes[0]
+        this.period = this.periodList[0]
+        this.versions = [this.productVersions[0]]
+
+        this.getPrice()
     }
 }
 </script>

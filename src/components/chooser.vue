@@ -39,7 +39,7 @@ export default {
             this.nowIndex = index
             // console.log(this.nowIndex)
             // console.log(index)
-            this.$emit('onChangeChooser', this.nowIndex)
+            this.$emit('on-change', this.choosers[index])
         }
     }
 }
