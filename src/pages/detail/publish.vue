@@ -248,9 +248,9 @@
 </template>
 
 <script>
-import VCounter from '../../components/counter'
-import VSelection from '../../components/selection'
-import multiplyChooser from '../../components/multiplyChooser'
+import VCounter from '../../components/base/counter'
+import VSelection from '../../components/base/selection'
+import multiplyChooser from '../../components/base/multiplyChooser'
 export default {
     components: {
         VCounter, VSelection, multiplyChooser

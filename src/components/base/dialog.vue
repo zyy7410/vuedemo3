@@ -1,4 +1,5 @@
 <template>
+<!-- 弹窗|对话框 -->
     <div>
         <div class="dialog-wrap" >
             <div class="dialog-cover" @click="closeMyself" v-if="isShow"></div>

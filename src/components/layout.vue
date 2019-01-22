@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import Dialog from './dialog'
+import Dialog from './base/dialog'
 import LogForm from './logForm'
 import RegForm from './regForm'
 export default {

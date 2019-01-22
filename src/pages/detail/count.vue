@@ -242,8 +242,8 @@
 </template>
 
 <script>
-import VChooser from '../../components/chooser'
-import VSelection from '../../components/selection'
+import VChooser from '../../components/base/chooser'
+import VSelection from '../../components/base/selection'
 export default {
     components: {
         VChooser, VSelection
