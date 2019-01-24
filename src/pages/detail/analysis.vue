@@ -42,7 +42,7 @@
             <div class="sales-board-line">
                 <div class="sales-board-line-left">&nbsp;</div>
                 <div class="sales-board-line-right">
-                    <div class="btn">立即购买</div>
+                    <div class="btn" @click="ShowPayDialog" >立即购买</div>
                 </div>
             </div>
 
@@ -71,6 +71,41 @@
                 <li>用户行为指标用户行为指标</li>
             </ul>
         </div>
+
+        <!-- 弹窗/对话框 -->
+        <my-dialog :is-show="isShowPayDialog" @on-close="hidePayDialog" >
+            <table class="buy-dialog-table">
+                <tr>
+                    <th>购买数量</th>
+                    <th>产品类型</th>
+                    <th>有效时间</th>
+                    <th>产品版本</th>
+                    <th>总价</th>
+                </tr>
+                <tr>
+                    <td>{{ buyNum }}</td>
+                    <td>{{ buyType.label }}</td>
+                    <td>{{ period.label }}</td>
+                    <td>
+                        <span v-for="item in versions">{{ item.label }}  </span>
+                    </td>
+                    <td>{{ price }}</td>
+                </tr>
+            </table>
+            <h3 class="buy-dialog-title">请选择银行</h3>
+            <!-- 选择银行 组件 -->
+            <bank-chooser @on-change="onChangeBanks"></bank-chooser>
+            <div class="btn buy-dialog-btn" @click="confirmBuy">确认购买</div>
+            <!-- 点击： 是先创建一个 订单 ，然后把跳转到 银行页面 交给后端去处理：交给后端 去新开一个窗口。。这里面 我们只需要发动一个 回到 order 这样一个请求-->
+        </my-dialog >
+
+        <!-- 新的 弹窗 -->
+        <my-dialog :is-show="isShowErrDialog" @on-close="hideErrDialog">
+            支付失败！
+        </my-dialog>
+        <!-- 新的 弹窗 -->
+        <check-order :is-show-check-dialog="isShowCheckDialog" :order-id="orderId" @on-close-check-dialog="hideCheckOrder"></check-order>
+
     </div>
 </template>
 
@@ -81,16 +116,32 @@ import axios from 'axios'
 // 模拟后端 返回数据
 import '../../mock/mock.js'
 
+// 弹框 组件
+import Dialog from '../../components/base/dialog'
+// 银行 组件
+import BankChooser from '../../components/bankChooser'
+// 订单 组件
+import CheckOrder from '../../components/checkOrder'
+// 组件：
 import VCounter from '../../components/base/counter'
 import VSelection from '../../components/base/selection'
 import VChooser from '../../components/base/chooser'
 import multiplyChooser from '../../components/base/multiplyChooser'
 export default {
     components: {
-        VSelection, VChooser, multiplyChooser, VCounter
+        VSelection, VChooser, multiplyChooser, VCounter, 
+        MyDialog: Dialog, BankChooser, CheckOrder
     },
     data () {
         return {
+            orderId: 0,
+            // 新弹窗：失败。
+            isShowErrDialog: false,
+            // 新弹窗：确认订单。
+            isShowCheckDialog: false,
+            // 弹窗/对话框：付款。 切换：显示/隐藏
+            isShowPayDialog: false,
+            // 价格
             price: 0,
 
             // 向后端发送一个请求(价格), 记录下，需要传过去的一些数据：
@@ -98,6 +149,7 @@ export default {
             buyType : {},
             versions : [],   // 版本
             period : {},     // 有效期
+            bankId: null,
 
             // 父组件 传给 子组件 的 数据
             minCount: 1,
@@ -176,11 +228,58 @@ export default {
                 // let data = JSON.parse(res.data)
                 // console.log(data.amount)
             })
+        },
+        // 弹窗/对话框 切换：显示
+        ShowPayDialog () {
+            this.isShowPayDialog = true
+        },
+        // 弹窗/对话框 切换：隐藏
+        hidePayDialog () {
+            this.isShowPayDialog = false
+        },
+        hideErrDialog () {
+            this.isShowErrDialog = false
+        },
+        hideCheckOrder () {
+            this.isShowCheckDialog = false
+        },
+        // 子组件 点击时 父组件 监听事件： 获取点击的id
+        onChangeBanks (bankObj) {
+            // 赋值
+            this.bankId = bankObj.id
+            console.log(this.bankId)
+        },
+        // 点击 确认购买 btn时，把页面的 数据 记录 带进来
+        confirmBuy () {
+            let buyVersionsArray = _.map(this.versions, (item) => {
+                return item.value
+            })
+            let reqParams = {
+                buyNum: this.buyNum,
+                buyType: this.buyType.value,
+                period: this.period.value,
+                versions: buyVersionsArray.join(','),
+                bankId: this.bankId
+            }
+            // 发送 ajax 请求,
+            axios.get('api/createOrder', reqParams)
+            .then((res) => {
+                // console.log(res)
+                this.orderId = res.data.orderId
+                console.log(this.orderId)
+
+                this.isShowCheckDialog = true
+                this.isShowPayDialog = false
+
+            }, (err) => {
+                this.isShowBuyDialog = false,
+                this.isShowErrDialog = true
+            })
         }
     },
     // 挂载后：组件 都 渲染 完了
     mounted () {
-        this.buyNum = 0
+        this.buyNum = 1
         this.buyType = this.productTypes[0]
         this.period = this.periodList[0]
         this.versions = [this.productVersions[0]]
@@ -191,6 +290,34 @@ export default {
 </script>
 
 <style scoped>
-
+.buy-dialog-table{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.buy-dialog-table td,
+.buy-dialog-table th{
+    border: 1px solid #e3e3e3;
+    text-align: center;
+    padding: 10px 0px;
+}
+.buy-dialog-table th{
+    background-color: #79cd92;
+    color: #fff;
+    border: 1px solid #79cd92;
+}
+.buy-dialog-title{
+    font-size: 16px;
+    font-weight: bold;
+}
+.buy-dialog-btn{
+    margin-top: 20px;
+}
+.btn{
+    display: inline-block;
+    padding: 8px 10px;
+    background-color: #79cd92;
+    color: #fff;
+    cursor: pointer;
+}
 </style>
 

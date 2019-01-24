@@ -148,3 +148,11 @@ Mock.mock(/login/, {
 Mock.mock(/getPrice/, {
   "amount": 678
 })
+
+Mock.mock(/createOrder/, {
+  "orderId": 'orderId2019'
+})
+
+Mock.mock(/checkOrder/, {
+  "orderId": 'orderId2019'
+})
